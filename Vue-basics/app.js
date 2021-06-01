@@ -3,10 +3,30 @@ const app = Vue.createApp({
   //template: "<h2> I am the template </h2>",
   data() {
     return {
+      url: "https://www.google.com/",
       showBooks: true,
-      title: "The runtime error",
-      author: "Adarsh",
-      age: 30,
+      books: [
+        {
+          title: "The runtime error",
+          author: "Adarsh",
+          img: "assets/book1.jpeg",
+          isFav: true,
+        },
+        {
+          title: "The soultime",
+          author: "Sadarsh",
+          img: "assets/book2.jpg",
+          isFav: false,
+        },
+        {
+          title: "The freespirit",
+          author: "Vadarsh",
+          img: "assets/book3.jpg",
+          isFav: true,
+        },
+      ],
+      x: 0,
+      y: 0,
     };
   },
   methods: {
@@ -16,6 +36,24 @@ const app = Vue.createApp({
     },
     toggleShowBooks() {
       this.showBooks = !this.showBooks;
+    },
+    handleEvent(e, data) {
+      console.log(e);
+      if (data) {
+        console.log(data);
+      }
+    },
+    handleMousemove(e) {
+      this.x = e.offsetX;
+      this.y = e.offsetY;
+    },
+    handleFav(book) {
+      book.isFav = !book.isFav;
+    },
+  },
+  computed: {
+    filteredBooks() {
+      return this.books.filter((book) => book.isFav);
     },
   },
 });

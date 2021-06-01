@@ -6,18 +6,63 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <script src="https://unpkg.com/vue@3.0.2"></script>
     <title>Document</title>
+    <style>
+      body {
+        background: #eee;
+        max-width: 960px;
+        margin: 20px auto;
+      }
+      p,
+      h3,
+      ul {
+        margin: 0;
+        padding: 0;
+      }
+      li {
+        list-style-type: none;
+        background: #fff;
+        margin: 20px auto;
+        padding: 10px 20px;
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+      .box {
+        padding: 100px 0;
+        width: 120px;
+        text-align: center;
+        background: #ddd;
+        margin: 20px;
+        display: inline-block;
+        overflow: none;
+      }
+      li.fav {
+        background-color: rgb(196, 91, 91);
+        color: white;
+      }
+    </style>
   </head>
   <body>
     <h1>Hello vue!</h1>
 
     <div id="app">
+      <a :href="url">Visit google here</a>
+      <!-- shortcut for v-bind - ":" -->
+      <br />
+
       <div v-if="showBooks">
-        <p>{{title}} - {{author}} -- {{age}}</p>
-        <button v-on:click="age++">Increase age</button>
-        <button v-on:click="age--">Decrease age</button>
-        <br />
-        <br />
-        <div @click="changeTitle('New book')">Change book title</div>
+        <ul>
+          <li
+            v-for="book in filteredBooks"
+            :class="{ fav: book.isFav}"
+            @click="handleFav(book)"
+          >
+            <img :src="book.img" :alt="book.title" width="80" height="80" />
+            <h3>{{book.title}}</h3>
+            <p>{{book.author}}</p>
+          </li>
+        </ul>
       </div>
       <br />
       <button @click="toggleShowBooks">
@@ -28,6 +73,14 @@
       <br />
       <div v-show="showBooks"><h3>Currently showing books</h3></div>
       <!-- v-show uses css display block / use it when data is static -->
+
+      <!-- mouse events -->
+      <div class="box" @mouseover="handleEvent($event,5)">
+        Mouseover (Enter element)
+      </div>
+      <div class="box" @mouseleave="handleEvent">Mouseleave</div>
+      <div class="box" @dblclick="handleEvent">Double sdfsdfsdfsfdclick</div>
+      <div class="box" @mousemove="handleMousemove">position - {{x}} {{y}}</div>
     </div>
   </body>
   <script src="app.js"></script>
