@@ -1,74 +1,22 @@
 <template>
   <div class="home">
     <h1>Home</h1>
-    <input type="text " v-model="search" />
-    <p>search term - {{ search }}</p>
-    <div v-for="name in matchingNames" :key="name">{{ name }}</div>
-    <button @click="handleWatch">Stop Watching</button>
-    <!-- <h2>refs</h2>
-    <p>{{ one.name }}-{{ one.age }}</p>
-    <button @click="updateOne">Update one</button>
-    <h2>Reactive</h2>
-    <p>{{ two.name }} - {{ two.age }}</p>
-    <button @click="updateTwo">Update two</button> -->
-
-    <!-- <p ref="p">My name is {{ name }} and age is {{ age }}</p>
-    <button @click="handleClick">Click me</button>
-    <button @click="age++">add age</button>
-    <input type="text" v-model="name" /> -->
+    <PostList v-if="showPosts" :posts="posts" />
+    <button @click="showPosts = !showPosts">Toggle posts</button>
+    <button @click="posts.pop()">delete a post</button>
   </div>
 </template>
 
 <script>
-import { computed, ref, reactive } from "@vue/reactivity";
-import { watch, watchEffect } from "@vue/runtime-core";
+import PostList from "../components/PostList.vue";
+import getPosts from "../composables/getPosts";
 export default {
   name: "Home",
+  components: { PostList },
   setup() {
-    // console.log("setup");
-    // template ref
-    // const p = ref(null);
-    // console.log(p, p.value);
+    const { posts, showPosts } = getPosts();
 
-    // const name = ref("adarsh");
-    // const age = ref(20);
-
-    // const one = ref({ name: "adarsh", age: 20 });
-    // const two = reactive({ name: "blade", age: 22 });
-
-    // const updateOne = () => {
-    //   one.value.age = 35;
-    // };
-
-    // const updateTwo = () => {
-    //   two.age = 35;
-    // };
-
-    // const handleClick = () => {
-    // name.value = "blade";
-    // age.value = 35;
-    // };
-    const search = ref("");
-    const names = ref(["adarsh", "vishnu", "abijith", "alfi"]);
-
-    const stopWatch = watch(search, () => {
-      console.log("watching you");
-    });
-
-    const stopEffect = watchEffect(() => {
-      console.log("watchi effect run", search.value);
-    });
-
-    const matchingNames = computed(() => {
-      return names.value.filter((name) => name.includes(search.value));
-    });
-
-    const handleWatch = () => {
-      stopWatch();
-      stopEffect();
-    };
-
-    return { names, search, matchingNames, handleWatch };
+    return { posts, showPosts };
   },
 };
 </script>
